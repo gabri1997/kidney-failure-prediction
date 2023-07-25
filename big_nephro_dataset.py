@@ -359,7 +359,7 @@ class YAML10YBiosDatasetFluo(data.Dataset):
         #df_fluo = pd.read_excel("/homes/grosati/Medical/data_csv/2_Fluo_Id_Bio.xlsx", header = 0)
 
         #Nuovo file
-        df_fluo = pd.read_excel("/homes/grosati/Medical/data_csv/HandFLUO-Bio-IMG-Person.xlsx", header = 0)
+        df_fluo = pd.read_excel("/nas/softechict-nas-2/nefrologia/HandFLUO-Bio-IMG-Person.xlsx", header = 0)
         #File generale con solo ID_BIOPSIA e ID_IMMAGINE
         #df_fluo = pd.read_excel("/homes/grosati/Medical/data_csv/Mtb_d_mdb.xlsx", header=0)
         #Trasformo in int gli ID di Biopsia

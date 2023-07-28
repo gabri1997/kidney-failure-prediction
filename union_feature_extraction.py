@@ -229,6 +229,12 @@ class FusedDataset(Dataset):
 
 if __name__ == "__main__":
 
+   
+    parser = ArgumentParser()
+    parser.add_argument('--split', default='training')
+    opt = parser.parse_args()
+    print(opt.split)
+
     dname = '/nas/softechict-nas-2/nefrologia/patches_dataset/big_nephro_5Y_bios_dataset.yml'
     
     dataset_mean = (0.813, 0.766, 0.837)
@@ -236,7 +242,7 @@ if __name__ == "__main__":
     
     dataset_mean_fluo_IgA_hand = (90.14926028, 90.14957433, 90.1492549)
     dataset_std_fluo_IgA_hand = (285.92956238, 285.92946316, 285.92956381)
-   
+    #preprocess_fn = transforms.RandomResizedCrop(size=(256, 512), scale=(.5, 1.0), ratio=(2., 2.))
 
     dictionary= {}
 
@@ -259,7 +265,10 @@ if __name__ == "__main__":
 
     ppb=4
 
-    fused_dataset = FusedDataset(dataset=dname, patches_per_bio=ppb,transforms_fluo=inference_transforms_fluo,transforms_wsi=inference_transforms,transforms_norm= fluo_norm, split=['test'])
+    if opt.split == "training":
+        fused_dataset = FusedDataset(dataset=dname, patches_per_bio=ppb,transforms_fluo=inference_transforms_fluo,transforms_wsi=inference_transforms,transforms_norm= fluo_norm, split=['training'])
+    else:
+        fused_dataset = FusedDataset(dataset=dname, patches_per_bio=ppb,transforms_fluo=inference_transforms_fluo,transforms_wsi=inference_transforms,transforms_norm= fluo_norm, split=['test'])
     #out = fused_dataset[0]
     
     fused_loader = DataLoader(fused_dataset,
@@ -286,7 +295,10 @@ if __name__ == "__main__":
 
             dictionary[i] = {"features_wsi":features_wsi, "feature_fluo":features_fluo, "label":target}
 
-        #torch.save(dictionary,'features_train.pt')
-        torch.save(dictionary,'features_test.pt')
+        
+        if opt.split == "training":
+            torch.save(dictionary,'features_train.pt')
+        else:
+            torch.save(dictionary,'features_test.pt')
       
       

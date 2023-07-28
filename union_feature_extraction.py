@@ -59,15 +59,10 @@ class MyResnet(nn.Module):
     
     def forward(self, x):
         batch_size, input_patches = x.size(0), x.size(1)
-        # to 2D
-        # x = self.to_2D(x)
         x = x.view(x.size(0) * x.size(1), x.size(2), x.size(3), x.size(4))
-        #x=torch.stack([x,x,x],1)
         print(x.shape)
 
         x = self.resnet(x.float())
-        # to bio
-        # x = self.to_bio(x)
         x = x.view(batch_size, input_patches, x.size(1), x.size(2), x.size(3))
         x = x.permute(0, 2, 1, 3, 4)
         avg_x = self.avgpool(x)
@@ -122,14 +117,10 @@ class FusedDataset(Dataset):
         for s in split:
             for i in d['split'][s]:
                     img_bio = d['bios'][i]['bio']
-            
-                    #PER MTB_D_MDB DEVO USARE IL TIPO STRINGA, PER GLI ALTRI INT
-                    #id_images = df_fluo[df_fluo['Biopsia n.'] == img_bio]
-
+        
                     id_images = df_fluo[df_fluo['Biopsia n.'] == int(img_bio)]
                     id_images_fluo = id_images[id_images['Type']=='IgA']['Id_image']
 
-                    #creo i due percorsi
 
                     #WSI
                     imgs_path_wsi = [img for img in all_images if f'_{img_bio}_pas' in img]
@@ -139,9 +130,7 @@ class FusedDataset(Dataset):
                     for id in id_images_fluo:
                         id_image = '/nas/softechict-nas-1/fpollastri/data/istologia/images/'+ id
                         image_path_fluo.append(id_image)
-                        
-
-                    #controllo che siano entrambi non vuoti
+                    
 
                     if imgs_path_wsi == [] or image_path_fluo ==[]:
                         print(f'bio {img_bio} has no both images')
@@ -181,28 +170,23 @@ class FusedDataset(Dataset):
 
     def __getitem__(self, index):
 
-            #print(index)
+            
             bio_wsi = self.bios_wsi[list(self.bios_wsi.keys())[index]]
             bio_fluo= self.bios_fluo[list(self.bios_fluo.keys())[index]]
 
             try:
+
                 #WSI
-                #patches_wsi = len(bio_wsi['images'])
-                #patches_wsi = random.sample(bio_wsi['images'], patches_wsi)
                 patches_wsi = bio_wsi['images']
 
                 #FLUO
-                #patches_wsi = random.sample(bio_wsi['images'], self.patches_per_bio)
                 patches_fluo = bio_fluo['images']
+                
             except ValueError:
 
                 print("Value error in get_item function")
                 
-                #patches_fluo = bio_fluo['images']
-                #patches_fluo += [random.choice(bio_fluo['images']) for _ in range(self.patches_per_bio - len(bio_fluo['images']))]
-               
-
-            #ground è lo stesso per tutti
+            #ground è lo stesso per entrambi
             ground= bio_wsi['label']
             images_wsi = []
             images_fluo = []
@@ -215,7 +199,7 @@ class FusedDataset(Dataset):
                 #FLUO
                 if self.transforms_fluo is not None:
                     image_fluo = self.transforms_fluo(image_fluo)
-                #DA USARE PER NORMALIZZAZIONE
+                
                 if image_fluo.shape == torch.Size([1, 772, 1040]):
                     image_fluo=torch.cat([image_fluo,image_fluo,image_fluo],0)
 
@@ -234,10 +218,7 @@ class FusedDataset(Dataset):
                     image_wsi = self.transforms_wsi(image_wsi)
                 
                 images_wsi.append(image_wsi)
-                
 
-                #print(len(images_wsi))
-                #print(len(images_fluo))
 
             return stack(images_wsi),stack(images_fluo),ground
 
@@ -255,7 +236,7 @@ if __name__ == "__main__":
     
     dataset_mean_fluo_IgA_hand = (90.14926028, 90.14957433, 90.1492549)
     dataset_std_fluo_IgA_hand = (285.92956238, 285.92946316, 285.92956381)
-    #preprocess_fn = transforms.RandomResizedCrop(size=(256, 512), scale=(.5, 1.0), ratio=(2., 2.))
+   
 
     dictionary= {}
 
@@ -307,8 +288,5 @@ if __name__ == "__main__":
 
         #torch.save(dictionary,'features_train.pt')
         torch.save(dictionary,'features_test.pt')
-        #d_wsi = csv.writer(open("/homes/grosati/Medical/Unione_dizionario_features_train.csv", "w"))
-        #or key, val in dictionary.items():
-
-            # write every key and value to file
-            #d_wsi.writerow([key, val])
+      
+      

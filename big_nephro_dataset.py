@@ -128,7 +128,7 @@ class YAML10YDataset(data.Dataset):
         images = []
 
         for patch in patches:
-            # image = np.asarray(Image.open(patch))
+            
             image = Image.open(patch)
             if self.transform is not None:
                 image = self.transform(image)
@@ -168,7 +168,7 @@ class YAML10YBiosDatasetAllPpb(data.Dataset):
         for s in split:
             for i in d['split'][s]:
                 img_bio = d['bios'][i]['bio']
-                # imgs_path = glob.glob(self.imgs_root + f'id*_{img_bio}*.png')
+               
                 imgs_path = [img for img in all_images if f'_{img_bio}_pas' in img]
                 if imgs_path == []:
                     print(f'bio {img_bio} has no images')
@@ -288,8 +288,7 @@ class YAML10YBiosDataset(data.Dataset):
   
     def __getitem__(self, index):
         bio = self.bios[list(self.bios.keys())[index]]
-        #ppb=len(bio['images'])
-        #print("Vediamo il numero di patches per questa wsi{0}: ".format(ppb))
+       
         try:
             #OGNI IMMAGINE HA DIVERSE PATCH ASSOCIATE E QUI IO VADO A PRENDERE UN SAMPLE RANDOMICO DI ALCUNE PATCHES
             #RANDOM SAMPLING WITHOUT REPLACEMENT
@@ -354,16 +353,11 @@ class YAML10YBiosDatasetFluo(data.Dataset):
         counter_found=0
         self.imgs_root = '/nas/softechict-nas-1/fpollastri/data/istologia/images/'
         self.dicts={'0':0,'1':0}
-        #DATASET
-        #Vecchio file errato con 2k immagini
-        #df_fluo = pd.read_excel("/homes/grosati/Medical/data_csv/2_Fluo_Id_Bio.xlsx", header = 0)
+    
 
         #Nuovo file
         df_fluo = pd.read_excel("/nas/softechict-nas-2/nefrologia/HandFLUO-Bio-IMG-Person.xlsx", header = 0)
-        #File generale con solo ID_BIOPSIA e ID_IMMAGINE
-        #df_fluo = pd.read_excel("/homes/grosati/Medical/data_csv/Mtb_d_mdb.xlsx", header=0)
-        #Trasformo in int gli ID di Biopsia
-        #df_fluo["Biopsia n."]=df_fluo["Biopsia n."].apply(int)
+      
 
         #all images sara una lista con path img1, path img2...
         all_images = glob.glob(self.imgs_root + '*.tif')
@@ -375,20 +369,16 @@ class YAML10YBiosDatasetFluo(data.Dataset):
             except yaml.YAMLError as exc:
                 print(exc)
 
-        #split train test e eval, prendo tutte le immagini dentro quello split li
-        #dicts = {'0':0,'1':0}
+      
     
         for s in split:
             for i in d['split'][s]:
                 img_bio = d['bios'][i]['bio']
-        
-                #PER MTB_D_MDB DEVO USARE IL TIPO STRINGA, PER GLI ALTRI INT
-                #id_images = df_fluo[df_fluo['Biopsia n.'] == img_bio]
 
                 id_images = df_fluo[df_fluo['Biopsia n.'] == int(img_bio)]
                 id_images = id_images[id_images['Type']=='IgA']['Id_image']
                 
-                #imgs_path = [img for img in all_images if f'_{img_bio}_pas' in img]
+           
 
                 image_path=[]
                 for id in id_images:
@@ -447,18 +437,15 @@ class YAML10YBiosDatasetFluo(data.Dataset):
     def __getitem__(self, index):
     
         fluo_Id = self.bios[list(self.bios.keys())[index]]
-        #print("{0} is the fluo_Id".format(fluo_Id))
         fluo_img= fluo_Id['images']
-        #print("{0} is the fluo_img".format(fluo_img))
         fluo_label = fluo_Id['label']
-        #print("{0} is the fluo_label".format(fluo_label))
-
+    
         image = Image.open(fluo_img)
              
         if self.transforms is not None:
             
             image = self.transforms(image) 
-            #image.show()
+        
 
             if image.shape == torch.Size([1, 772, 1040]):
                 image=torch.cat([image,image,image],0)
@@ -489,16 +476,11 @@ class YAML10YBiosDatasetFluoNotDecoupled(data.Dataset):
         counter_found=0
         self.imgs_root = '/nas/softechict-nas-1/fpollastri/data/istologia/images/'
         self.dicts={'0':0,'1':0}
-        #DATASET
-        #Vecchio file errato con 2k immagini
-        #df_fluo = pd.read_excel("/homes/grosati/Medical/data_csv/2_Fluo_Id_Bio.xlsx", header = 0)
+  
 
         #Nuovo file
         df_fluo = pd.read_excel("/homes/grosati/Medical/data_csv/HandFLUO-Bio-IMG-Person.xlsx", header = 0)
-        #File generale con solo ID_BIOPSIA e ID_IMMAGINE
-        #df_fluo = pd.read_excel("/homes/grosati/Medical/data_csv/Mtb_d_mdb.xlsx", header=0)
-        #Trasformo in int gli ID di Biopsia
-        #df_fluo["Biopsia n."]=df_fluo["Biopsia n."].apply(int)
+    
 
         #all images sara una lista con path img1, path img2...
         all_images = glob.glob(self.imgs_root + '*.tif')
@@ -510,20 +492,12 @@ class YAML10YBiosDatasetFluoNotDecoupled(data.Dataset):
             except yaml.YAMLError as exc:
                 print(exc)
 
-        #split train test e eval, prendo tutte le immagini dentro quello split li
-        #dicts = {'0':0,'1':0}
-    
         for s in split:
             for i in d['split'][s]:
                 img_bio = d['bios'][i]['bio']
-        
-                #PER MTB_D_MDB DEVO USARE IL TIPO STRINGA, PER GLI ALTRI INT
-                #id_images = df_fluo[df_fluo['Biopsia n.'] == img_bio]
 
                 id_images = df_fluo[df_fluo['Biopsia n.'] == int(img_bio)]
                 id_images = id_images[id_images['Type']=='IgA']['Id_image']
-                
-                #imgs_path = [img for img in all_images if f'_{img_bio}_pas' in img]
 
                 image_path=[]
                 for id in id_images:
@@ -596,7 +570,6 @@ class YAML10YBiosDatasetFluoNotDecoupled(data.Dataset):
                image = self.transforms(image) 
                #image.show()
 
-            #DA USARE PER NORMALIZZAZIONE
             if image.shape == torch.Size([1, 772, 1040]):
                 image=torch.cat([image,image,image],0)
 
@@ -608,7 +581,7 @@ class YAML10YBiosDatasetFluoNotDecoupled(data.Dataset):
                 
             
             s = image.shape
-            #print(s)
+          
            
             images.append(image)
 
@@ -627,49 +600,30 @@ if __name__ == '__main__':
     from torchvision import transforms
     from torch.utils.data import DataLoader
 
-    # preprocess_fn = transforms.Compose([transforms.RandomCrop((1000, 2000), pad_if_needed=True, fill=255)])
-    # preprocess_fn = transforms.Compose([transforms.RandomCrop((1000, 2000), pad_if_needed=True, fill=255), transforms.Resize(size=(256, 512))])
-    # preprocess_fn = transforms.Resize((256, 256))
+    parser = ArgumentParser()
+    parser.add_argument('--type', default='wsi')
+    opt = parser.parse_args()
+    print(opt.type)
 
-    #dname='/nas/softechict-nas-2/fpollastri/data/big_nephro/big_nephro_bios_dataset.yml'
+    #dataset
     dname = '/nas/softechict-nas-2/nefrologia/patches_dataset/big_nephro_5Y_bios_dataset.yml'
-  
-    custom_training_transforms = transforms.Compose([
-        
-        transforms.ColorJitter(contrast=(1.7, 1.7)),
-        transforms.ToTensor(),
-        #transforms.Resize((256,256)),
-        #PER LE FLUO RIMANE TO_TENSOR E RESIZE
-    
-    ])
-    
+    #patches_per_bio
     ppb = 1
-    dataset = YAML10YBiosDataset(dataset=dname, crop_type='patches', patches_per_bio=ppb,transforms=custom_training_transforms, split=['test'])
-    #dataset = YAML10YBiosDatasetFluo(dataset=dname, crop_type='patches', patches_per_bio=ppb,transforms=custom_training_transforms,fluo_transform=None, split=['training'])
-    
-    
-    #FLUO (IMMAGINI) IN TRAIN SONO 146(0) 14 (1) (LE BIO SONO 73 (0) E 7 (1))
-    #FLUO (IMMAGINI) IN TEST SONO 65 (0) 29 (1) (LE BIO SONO 27 (0) E 13 (1))
-    #WSI (BIO) IN TRAIN SONO 330 (0) 33 (1) 
-    #WSI (BIO) IN TEST SONO 88 (0) 45 (1) 
-    
-    '''
-    dict_label=dataset.get_labels()
-    size_0 = dict_label.get('0')
-    size_1 = dict_label.get('1')
-    print(size_0)
-    print(size_1)
-    '''
 
+    #wsi
+    if opt.type == "wsi":
     
-    tmp = np.array([dataset.bios[k]['label'] for k in dataset.bios])
-    tmp[tmp <= 0.5] = 0
-    tmp[tmp > 0.5] = 1
-    print(tmp.sum())
-    print(len(tmp) - tmp.sum())
-    
+         
+        custom_training_transforms = transforms.Compose([
+            
+            transforms.ColorJitter(contrast=(1.7, 1.7)),
+            transforms.ToTensor(),
+        
+        ])
 
-    data_loader = DataLoader(dataset,
+        dataset = YAML10YBiosDataset(dataset=dname, crop_type='patches', patches_per_bio=ppb,transforms=custom_training_transforms, split=['test'])
+
+        data_loader = DataLoader(dataset,
                              batch_size=1,
                              shuffle=False,
                              num_workers=0,
@@ -677,41 +631,87 @@ if __name__ == '__main__':
                              pin_memory=False)
 
 
-    rgb = np.zeros((ppb * 450, 3, 256, 256))
-    #rgb = np.zeros((ppb * 450, 3, 772, 1040))
-    counter = 0
+   
+        counter = 0
+        tmp = np.array([dataset.bios[k]['label'] for k in dataset.bios])
+        tmp[tmp < 1] = 0
+        tmp[tmp >= 1] = 1
+        print(tmp.sum())
+        print(len(tmp) - tmp.sum())
 
     
-    '''#DISACCOPPIAMENTO
-    for i, (x,target) in enumerate(data_loader):
-        #print(x.shape)
-        #print(target)
-        if i % 10 == 0:
-            print(f'doing batch #{i}')
-    '''
-    
-    '''
-        for img in imgs:
-            for s_img in img:
-                #debug_plot(np.moveaxis(np.array(s_img), 0, -1))
-                rgb[counter:counter + ppb] = np.array(s_img)
-                counter += ppb
-            pass
-    '''
-    
-    #WSI
-    for i, (b_img, lbl, name) in enumerate(data_loader):
-        #print(b_img, lbl, name)
-        if i % 10 == 0:
-            print(f'doing batch #{i}')
-    
-    '''
+        if opt.type == "wsi":
+            for i, (b_img, lbl) in enumerate(data_loader):
+            #print(b_img, lbl, name)
+                if i % 10 == 0:
+                    print(f'doing batch #{i}')
+
+        #TO COMPUTE RGB
+        '''
+        rgb = np.zeros((ppb * 450, 3, 256, 256))
         for img in b_img:
             for s_img in img:
                 #debug_plot(np.moveaxis(np.array(s_img), 0, -1))
                 rgb[counter:counter + ppb] = np.array(s_img)
                 counter += ppb
             pass
+    #print(f'mean values RGB = {np.mean(rgb, axis=(0, 2, 3))} | std values RGB = {np.std(rgb, axis=(0, 2, 3))}')
+    '''
+
+        
+    #fluo
+    if opt.type == "fluo":
+
+        custom_training_transforms = transforms.Compose([
+            
+            
+            transforms.ToTensor(),
+            transforms.Resize((256,256)),
+            
+        
+        ])
+
+        dataset = YAML10YBiosDatasetFluo(dataset=dname, crop_type='patches', patches_per_bio=ppb,transforms=custom_training_transforms,fluo_transform=None, split=['test'])
+
+        data_loader = DataLoader(dataset,
+                             batch_size=1,
+                             shuffle=False,
+                             num_workers=0,
+                             # drop_last=True,
+                             pin_memory=False)
+
+
+   
+        counter = 0
+
+        dict_label=dataset.get_labels()
+        size_0 = dict_label.get('0')
+        size_1 = dict_label.get('1')
+        print(size_0)
+        print(size_1)
+
+        
+        if opt.type == "fluo":
+            for i, (x,target) in enumerate(data_loader):
+                if i % 10 == 0:
+                    print(f'doing batch #{i}')
+         '''
+        rgb = np.zeros((ppb * 450, 3, 772, 1040))
+        rgb = np.zeros((ppb * 450, 3, 256, 256))
+        for img in imgs:
+            for s_img in img:
+                #debug_plot(np.moveaxis(np.array(s_img), 0, -1))
+                rgb[counter:counter + ppb] = np.array(s_img)
+                counter += ppb
+            pass
+    #print(f'mean values RGB = {np.mean(rgb, axis=(0, 2, 3))} | std values RGB = {np.std(rgb, axis=(0, 2, 3))}')
     '''
     
-    #print(f'mean values RGB = {np.mean(rgb, axis=(0, 2, 3))} | std values RGB = {np.std(rgb, axis=(0, 2, 3))}')
+    #Summary
+
+    #FLUO (IMMAGINI) IN TRAIN SONO 150(0) 10 (1) 
+    #FLUO (IMMAGINI) IN TEST SONO 70 (0) 24 (1) 
+    #WSI (BIO) IN TRAIN SONO 338 (0) 25 (1) 
+    #WSI (BIO) IN TEST SONO 104 (0) 29 (1) 
+    
+   

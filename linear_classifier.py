@@ -74,8 +74,6 @@ class MyNetwork():
         # Forward pass
         self.model.train()
         losses = []
-        #sigm = nn.Sigmoid()
-        #sofmx = nn.Softmax(dim=1)
         features = torch.load('/homes/grosati/Medical/features_train.pt')
         losses = []
         f_loader = Features_loader()
@@ -84,19 +82,13 @@ class MyNetwork():
         for index in range(len(features)):
             
             feature_wsi,feature_fluo,label = f_loader.load_features(index,features)
-            #print("Feature_wsi_shape:{0} ".format(feature_wsi.shape))
-            #print("Feature_fluo_shape:{0} ".format(feature_fluo.shape))
-            #print("Label:{0} ".format(label))
             union_features = torch.cat ((feature_wsi,feature_fluo),0)
             #print(union_features.shape)
             union_features = union_features.to('cuda')
             label = label.to('cuda', torch.float)
 
             output = self.model(union_features)       
-            #check_output = sigm(output)
             label = (label == 1.).float()
-            #label = label.unsqueeze(1)
-            #print(output.size(), label.size())
             loss = self.criterion(output,label)
             losses.append(loss.item())
             # Backward pass and optimization
@@ -123,9 +115,6 @@ class MyNetwork():
         for index in range(len(features)):
           
               feature_wsi,feature_fluo,label = f_loader.load_features(index,features)
-              #print("Feature_wsi_shape:{0} ".format(feature_wsi.shape))
-              #print("Feature_fluo_shape:{0} ".format(feature_fluo.shape))
-              #print("Label:{0} ".format(label))
               union_features = torch.cat ((feature_wsi,feature_fluo),0)
               #print(union_features.shape)
               union_features = union_features.to('cuda')
@@ -136,8 +125,6 @@ class MyNetwork():
               check_output = sigm(output)
               print("output{0}".format(check_output))
               label = (label == 1.).float()
-              #label = label.unsqueeze(1)
-              #print(output.size(), label.size())
               gts[index] = label.to('cpu')
               preds[index] = check_output.to('cpu')
 

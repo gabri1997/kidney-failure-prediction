@@ -621,7 +621,15 @@ if __name__ == '__main__':
         
         ])
 
-        dataset = YAML10YBiosDataset(dataset=dname, crop_type='patches', patches_per_bio=ppb,transforms=custom_training_transforms, split=['test'])
+        custom_training_transforms_AllPpb = transforms.Compose([
+
+                transforms.Resize(size=(256, 512)),
+                transforms.ToTensor(),
+
+        ])
+
+        #dataset = YAML10YBiosDataset(dataset=dname, crop_type='patches', patches_per_bio=ppb,transforms=custom_training_transforms, split=['training'])
+        dataset = YAML10YBiosDatasetAllPpb(dataset=dname, crop_type='patches', patches_per_bio=ppb,transforms=custom_training_transforms_AllPpb, split=['training'])
 
         data_loader = DataLoader(dataset,
                              batch_size=1,

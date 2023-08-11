@@ -197,9 +197,9 @@ class YAML10YBiosDatasetAllPpb(data.Dataset):
   
     def __getitem__(self, index):
 
-        bio = self.bios[list(self.bios.keys())[index]]
-        ppb_wsi = len(bio['images'])
-        patches = random.sample(bio['images'], ppb_wsi)
+        bio = self.bios[list(self.bios.keys())[index]
+        patches = bio['images']
+        
         
         ground = bio['label']
         images = []

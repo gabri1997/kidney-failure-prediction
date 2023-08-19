@@ -70,6 +70,8 @@ Once trained, an evaluation is performed using the features present in the file 
 ## Evaluation across various dataset partitions.
 
 One of the experiments conducted in this study involves comparing results across multiple instances of the dataset, referred to as 'bags', that correspond to smaller subset of the dataset itself.
+The `wsi_split.py` file enables conducting experiments with multiple splits on the WSI dataset.
+The file `filter.py` must be included to create the splits.
 Firstly, the traditional division of the dataset into separate training and test splits have been eliminated, instead, the entire dataset was used as a whole.        
 The approach involved conducting multiple runs, each involving the selection of a distinct 'bag' from the dataset. To facilitate this, two separate lists were created: one containing indices corresponding to images in the training set, and the other containing indices of images in the test set. Both lists are composed by indices linked to images with labels 0 and 1. The composition of these lists involved randomly selecting a subset of indices from the complete index list, while maintaining a consistent ratio between labels 0 and 1.
 
@@ -78,7 +80,9 @@ The objective is to compare the outcomes and evaluate the extent to which they a
 
 These experiments were conducted for both Whole Slide Images and Immunofluorescence images.
 
-Specifically, the main change that has been done consists in the use of the 'SubsetRandomSampler'
-that is a class provided by the PyTorch library, specifically in the 'torch.utils.data module'.
+Specifically, the main change that has been done consists in the use of the `SubsetRandomSampler`
+that is a class provided by the PyTorch library, specifically in the `torch.utils.data module`.
+
+
 
 

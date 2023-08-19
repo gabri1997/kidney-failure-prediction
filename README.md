@@ -11,7 +11,7 @@ Gli esperimenti riguardano 3 diverse tipologie di immagini:
 <img src="id1006_0071_pas_Regione 1_1CC0_patch_2.png" alt="Alt text" title="Optional title">
 
 
-## Whole slide images
+## Whole slide images (WSI)
 
 Il file main_wsi.py consente di eseguire gli esperimenti sulle WSI.
 

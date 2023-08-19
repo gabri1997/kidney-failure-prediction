@@ -27,6 +27,7 @@ import torch
 from sklearn.metrics import ConfusionMatrixDisplay
 import wandb
 import random
+from torch.utils.data.sampler import SubsetRandomSampler
 
 
 
@@ -104,6 +105,7 @@ class MyResnet(nn.Module):
         #x=torch.stack([x,x,x],1)
             #print("La shape di x: {0} ".format(x.shape))
             #La shape di x: torch.Size([8, 3, 772, 1040])
+            #estrae feature con resnet
         x = self.resnet(x.float())
             #print("La shape di x dopo resent float: {0} ".format(x.shape))
             #La shape di x dopo resent float: torch.Size([8, 512, 25, 33]) 
@@ -114,8 +116,11 @@ class MyResnet(nn.Module):
             #print("La shape di x dopo la permutazione: {0} ".format(x.shape))
             #La shape di x dopo la permutazione: torch.Size([2, 512, 4, 25, 33]) 
 
+        #print ("Questa è la shape prima {0}".format(x.shape))
         avg_x = self.avgpool(x)
+        #print ("Questa è la shape dopo avg {0}".format(avg_x.shape))
         max_x = self.maxpool(x)
+        #print ("Questa è la shape dopo max_x {0}".format(max_x.shape))
             
         x = torch.cat((avg_x, max_x), dim=1)
             #print("La shape di x dopo cat: {0} ".format(x.shape))
@@ -168,7 +173,7 @@ class MyDensenet(nn.Module):
 
 
 class NefroNet():
-    def __init__(self, years, net, input_patches, preprocess_type, num_classes, num_epochs, l_r, batch_size, n_workers, job_id, weights, images_type):
+    def __init__(self, years, net, input_patches, preprocess_type, num_classes, num_epochs, l_r, batch_size, n_workers, job_id, weights, images_type, type_of_experiment):
         # Hyper-parameters
         self.years = years
         self.net = net
@@ -188,6 +193,7 @@ class NefroNet():
         #self.nname = self.net + f'_{self.years}Y_' + str(job_id)
         self.nname = self.net + '_5Y_' + str(job_id)
         self.images_type=images_type
+        self.type_of_experiment = type_of_experiment
 
         #dname = f'/nas/softechict-nas-2/fpollastri/data/big_nephro/big_nephro_{self.years}Y_bios_dataset.yml'
         dname= '/nas/softechict-nas-2/fpollastri/data/big_nephro/big_nephro_5Y_bios_dataset.yml'
@@ -241,9 +247,12 @@ class NefroNet():
             ])
 
             dataset = YAML10YBiosDataset(dataset=dname, crop_type=dataset_type, patches_per_bio=self.input_patches, transforms=custom_training_transforms, split=['training'])
-            #test_dataset = YAML10YBiosDataset(dataset=dname, crop_type=dataset_type, patches_per_bio=max(16, self.input_patches * 2), transforms=inference_transforms, split=['test'])
+            
             #WSI CON LO STESSO NUMERO DI PATCHES PER BIO
-            test_dataset = YAML10YBiosDatasetAllPpb(dataset=dname, crop_type=dataset_type, patches_per_bio=None, transforms=inference_transforms, split=['test'])
+            if self.type_of_experiment == 'all_patches':
+                test_dataset = YAML10YBiosDatasetAllPpb(dataset=dname, crop_type=dataset_type, patches_per_bio=None, transforms=inference_transforms, split=['test'])
+            else:
+                test_dataset = YAML10YBiosDataset(dataset=dname, crop_type=dataset_type, patches_per_bio=max(16, self.input_patches * 2), transforms=inference_transforms, split=['test'])
 
         if self.net == 'densenet': 
             self.n = MyDensenet(net=self.net, num_classes=self.num_classes).to('cuda')
@@ -315,8 +324,10 @@ class NefroNet():
 
                 else:
                     target = target.to('cuda', torch.long)
-             
+
+                #print("Shape before{0}".format(x.shape))
                 output = torch.squeeze(self.n(x), -1)
+                #print("Shape after{0}".format(output.shape))
                 loss = self.criterion(output, target)
                 losses.append(loss.item())
                 # compute gradient and do SGD step
@@ -619,15 +630,16 @@ if __name__ == '__main__':
     parser.add_argument('--SRV', action='store_true', help='is training on remote server')
     parser.add_argument('--weighted', action='store_true', help='add class weights')
     parser.add_argument('--job_id', type=str, default='', help='slurm job ID')
-    parser.add_argument('--images_type', type=str, default='wsi', help='')
+    #parser.add_argument('--images_type', type=str, default='wsi', help='')
+    #standard or all_patches
+    parser.add_argument('--type_of_experiment', type=str, default="all_patches",help='')
+
     opt = parser.parse_args()
     print(opt)
 
     n = NefroNet(years=5, net=opt.network, input_patches = opt.patches_per_bio, preprocess_type=opt.preprocess, num_classes=opt.classes, num_epochs=opt.epochs, batch_size=opt.batch_size,
                  l_r=opt.learning_rate, n_workers=opt.workers, job_id=opt.job_id, weights=opt.weighted, images_type=opt.images_type)
     
-   
-           
     if opt.epochs > 0:  
                         
             n.train()

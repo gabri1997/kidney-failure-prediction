@@ -32,7 +32,7 @@ The class responsible for loading images in the `big_nephro_dataset` file is:
 * `YAML10YBiosDataset`: Used in the training.
 * `YAML10YBiosDataset` or `YAML10YBiosDatasetAllPpb`: Used in testing, depending on the type of experiment (`YAML10YBiosDatasetAllPpb` for "all_patches").
 
-## Immagini in immunogluorescenza
+## Immunofluorescence images
 
 The `main_fluo.py` file allows you to run experiments on immunofluorescence images.
 

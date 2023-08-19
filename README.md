@@ -47,8 +47,8 @@ I pesi da precaricare delle due reti sono nella cartella weights.
 
 Il file union_feature_extraction.py consente di estrarre le features dai patches delle WSI e dalle immagini in immunofluorescenza.
 Le features vengono poi salvate in:
--features_train.pt
--features_test.pt
+* features_train.pt
+* features_test.pt
 
 ## Linear classifier
 

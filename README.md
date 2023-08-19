@@ -83,6 +83,8 @@ These experiments were conducted for both Whole Slide Images and Immunofluoresce
 Specifically, the main change that has been done consists in the use of the `SubsetRandomSampler`
 that is a class provided by the PyTorch library, specifically in the `torch.utils.data module`.
 
+The dataset used is in the folder Datasets:  `big_nephro_5Y_bios_dataset_split.yml`.
+
 
 
 

@@ -7,6 +7,9 @@ Gli esperimenti riguardano 3 diverse tipologie di immagini:
 - Immagini in immunofluorescenza (Fluo)
 - Unione delle due precedenti tipologie (WSI + Fluo)
 
+![Alt text](relative%20path/to/img.jpg?raw=true "Title")
+
+
 ## Whole slide images
 
 Il file main_wsi.py consente di eseguire gli esperimenti sulle WSI.

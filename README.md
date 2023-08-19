@@ -1,11 +1,11 @@
 # Prediction of kidney failure using Neural Networks
 
-Lo scopo di questo studio`e quello di indagare e migliorare lo score prognostico dell’algoritmo di apprendimento (DLPS). Combinando i risultati ottenuti utilizzando immagini intere di biopsie renali (WSI) con la controparte in immunofluorescenza, si riesce a prevedere se i pazienti saranno colpiti da insufficienza renale entro i prossimi 5 anni
+The purpose of this study is to investigate and enhance the prognostic score of the learning algorithm (DLPS). By combining the results obtained using whole slide images of renal biopsies (WSI) with their counterpart in immunofluorescence, it becomes possible to predict whether patients will experience renal failure within the next 5 years.
 
-Gli esperimenti riguardano 3 diverse tipologie di immagini: 
+The experiments concern three different types of images:
 - Whole slide images (WSI)
-- Immagini in immunofluorescenza (Fluo)
-- Unione delle due precedenti tipologie (WSI + Fluo)
+- Immunofluorescence images (Fluo)
+- Combination of the two aforementioned types (WSI + Fluo)
 
 <div>
     <img src="Imges/id1006_0071_pas_Regione 1_1CC0_patch_2.png" alt="Alt text" title="Patch of a wsi">
@@ -16,51 +16,55 @@ Gli esperimenti riguardano 3 diverse tipologie di immagini:
 
 ## Whole slide images (WSI)
 
-Il file main_wsi.py consente di eseguire gli esperimenti sulle WSI.
+The `main_wsi.py` file allows you to run experiments on the WSI (Whole Slide Images).
 
-I parametri in input sono diversi, il più importante è il seguente:
-* type_of_experiment: consente di specifiare il modo in cui vengono caricati i patches delle WSI, questo parametro può essere "standard" o "all_patches".
-  Nel caso standard per ogni WSI il numero di patches considerati è fisso ed è specificato da un secondo parametro (patches_per_bio). Nel caso in cui una WSI
-  avesse meno patches di quelli indicati dal parametro, i patches mancanti sarebbero riestratti casualmente dai precedenti.
-  Il secondo tipo, "all_patches", consente di considerare per ogni WSI, tutti i patches di cui è composta. 
-* patches_per_bio: consente di specificare il numero di patch da estrarre da ogni WSI, questo valore è uguale per ciascuna WSI ed è utilizzato solo nel caso in cui
-  il parametro type_of_experiment = "standard".
-  
-Gli altri parametri sono i classici (numero di epoche, tipo di preprocessing, tipo di modello etc.)
-Per eseguire il file main_wsi è necessario avere il file big_nephro_dataset che consente di caricare le immagini.
-La classe che carica le immagini nel file big_nephro_dataset è:
-*YAML10YBiosDataset : nel train
-*YAML10YBiosDataset o YAML10YBiosDatasetAllPpb: nel test, a seconda della tipologia di esperimento (YAML10YBiosDatasetAllPpb per "all_patches")
+There are several input parameters, the most important of which is as follows:
+* `type_of_experiment`: Specifies how WSI patches are loaded. This parameter can be either "standard" or "all_patches".
+  In the "standard" case, a fixed number of patches are considered for each WSI, specified by a second parameter (`patches_per_bio`). If a WSI
+  has fewer patches than indicated by the parameter, the missing patches will be randomly re-extracted from the previous ones.
+  The second type, "all_patches", considers all patches that make up each WSI.
+* `patches_per_bio`: Specifies the number of patches to be extracted from each WSI. This value is the same for each WSI and is used only when
+  the `type_of_experiment` parameter is set to "standard".
+
+The other parameters are typical (number of epochs, preprocessing type, model type, etc.).
+To execute the `main_wsi.py` file, it's necessary to have the `big_nephro_dataset` file, which enables image loading.
+The class responsible for loading images in the `big_nephro_dataset` file is:
+* `YAML10YBiosDataset`: Used in the training.
+* `YAML10YBiosDataset` or `YAML10YBiosDatasetAllPpb`: Used in testing, depending on the type of experiment (`YAML10YBiosDatasetAllPpb` for "all_patches").
 
 ## Immagini in immunogluorescenza
 
-Il file main_fluo.py consente di eseguire gli esperimenti sulle immagini in immunofluorescenza.
+The `main_fluo.py` file allows you to run experiments on immunofluorescence images.
 
-Le immagini in immunofluorescenza non sono patches, perciò vengono considerate singolarmente ed ereditano la label della biopsia da cui derivano.
-I parametri in input sono classici.
-La classe che carica le immagini nel file big_nephro_dataset è:
-*YAML10YBiosDatasetFluo : per train e test
+Immunofluorescence images are not patches; therefore, they are considered individually and inherit the label from the biopsy they originate from.
+The input parameters are standard.
+The class responsible for loading images in the `big_nephro_dataset` file is:
+* `YAML10YBiosDatasetFluo`: Used for both training and testing.
 
 ## WSI + Fluo
 
-Il file eval_fluo_wsi.py consente di fare una evaluation utilizzando entrambe le tipologie di immagini.
-Nell'evaluation vengono considerate le immagini in immunofluorescenza e le WSI che appartenenti alla stessa biopsia.
-Il train viene eseguito separatamente, una rete viene addestrata usando le WSI, una seconda rete viene addestrata usando le fluo.
-Succcessivamente, i pesi vengono caricati ed utilizzati per fare l'evaluation sulla interesezione dei due dataset.
-Nell'evaluation le due tipologie di immagini (provenienti dalla stessa biopsia, ma una fluo e l'altra PAS) vengono fatte classificare dalle due reti, l'output finale della classificazione è la media dei 2 valori predetti dalle reti.
-I pesi da precaricare delle due reti sono nella cartella weights.
+The `eval_fluo_wsi.py` file allows for evaluation using both types of images.
+
+In the evaluation, immunofluorescence images and the WSI from the same biopsy are considered. The training is carried out separately, where one network is trained using WSI, and another network is trained using fluorescence images.
+
+Subsequently, the weights are loaded and used for evaluation on the intersection of the two datasets. During the evaluation, the two types of images (coming from the same biopsy, one being fluorescence and the other PAS) are classified by the two networks. The final output of the classification is the average of the two values predicted by the networks.
+
+The preloaded weights of the two networks are in the "weights" folder.
 
 ## Feature extraction
 
-Il file union_feature_extraction.py consente di estrarre le features dai patches delle WSI e dalle immagini in immunofluorescenza.
-Le features vengono poi salvate in:
-* features_train.pt
-* features_test.pt
+The `union_feature_extraction.py` file allows extracting features from both WSI patches and immunofluorescence images.
+
+The features are then saved into:
+* `features_train.pt`
+* `features_test.pt`
 
 ## Linear classifier
 
-Il file linear_classifier.py permette di riaddestrare un classificatore lineare usando le features precedentemente estratte. 
-Il classificatore viene addestrato usando le features estratte da immagini WSI e Fluo che appartengono alla stessa biopsia (fetaures_train.py).
-Una volta addestrato, viene fatta l'evaluation con le features presenti nel file features_test.py.
+The `linear_classifier.py` file allows retraining a linear classifier using the previously extracted features.
+
+The classifier is trained using features extracted from both WSI and Fluo images belonging to the same biopsy (`fetaures_train.py`).
+
+Once trained, an evaluation is performed using the features present in the file `features_test.py`.
 
 

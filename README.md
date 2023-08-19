@@ -9,7 +9,7 @@ Gli esperimenti riguardano 3 diverse tipologie di immagini:
 
 <div>
     <img src="id1006_0071_pas_Regione 1_1CC0_patch_2.png" alt="Alt text" title="Patch of a wsi">
-    <img src="00045.png" alt="Alt text" title="IgA immunofluorescne image">
+    <img src="Imges/00045.png" alt="Alt text" title="IgA immunofluorescne image">
 </div>
 
 

@@ -51,6 +51,8 @@ Subsequently, the weights are loaded and used for evaluation on the intersection
 
 The preloaded weights of the two networks are in the "weights" folder.
 
+<img src="Imges/combined out.png" alt="Alt text" title="Combined output">
+
 ## Feature extraction
 
 The `union_feature_extraction.py` file allows extracting features from both WSI patches and immunofluorescence images.

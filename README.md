@@ -8,6 +8,7 @@ Gli esperimenti riguardano 3 diverse tipologie di immagini:
 - Unione delle due precedenti tipologie (WSI + Fluo)
 
 ![Alt text](id1006_0071_pas_Regione 1_1CC0_patch_2.png "PAS")
+<img src="id1006_0071_pas_Regione 1_1CC0_patch_2.png" alt="Alt text" title="Optional title">
 
 
 ## Whole slide images

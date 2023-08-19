@@ -7,7 +7,7 @@ Gli esperimenti riguardano 3 diverse tipologie di immagini:
 - Immagini in immunofluorescenza (Fluo)
 - Unione delle due precedenti tipologie (WSI + Fluo)
 
-![Alt text](relative%20path/to/img.jpg?raw=true "Title")
+![Alt text](id1006_0071_pas_Regione 1_1CC0_patch_2.png "PAS")
 
 
 ## Whole slide images

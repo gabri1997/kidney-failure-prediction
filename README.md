@@ -53,6 +53,9 @@ The preloaded weights of the two networks are in the "weights" folder.
 
 <img src="Imges/combined out.png" alt="Alt text" title="Combined output">
 
+## Results
+Acc: 0.825 | AUC: 0.877 | F1 Score: 0.533 | Precision: 0.800 | Recall: 0.400 | Specificity: 0.967 | Trues: 5 | Correct Trues: 4 | Ground Truth Trues: 10
+
 ## Feature extraction
 
 The `union_feature_extraction.py` file allows extracting features from both WSI patches and immunofluorescence images.

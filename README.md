@@ -37,8 +37,10 @@ The class responsible for loading images in the `big_nephro_dataset` file is:
 <img src="Imges/Metrics_rename/WSI standard.png" alt="Alt text" title="Confusion matrix standard WSI">
 
 ## AUC
-<img src="Imges/Metrics_rename/WSI standard(1).png" alt="Alt text" title="AUC">
 
+### ResNet-18
+
+<img src="Imges/Metrics_rename/WSI standard(1).png" alt="Alt text" title="AUC">
 
 ## All patches per biopsy
 

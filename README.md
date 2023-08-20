@@ -58,6 +58,12 @@ The input parameters are standard.
 The class responsible for loading images in the `big_nephro_dataset` file is:
 * `YAML10YBiosDatasetFluo`: Used for both training and testing.
 
+## Fluo unweighted
+
+<img src="Imges/Metrics_rename/Fluo no weights.png" alt="Alt text" title="Confusion matrix fluo unweighted">
+
+## AUC
+
 ## WSI + Fluo
 
 The `eval_fluo_wsi.py` file allows for evaluation using both types of images.

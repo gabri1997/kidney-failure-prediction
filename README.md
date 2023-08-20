@@ -70,7 +70,9 @@ The class responsible for loading images in the `big_nephro_dataset` file is:
 
 <img src="Imges/Metrics_rename/Fluo decoupled.png" alt="Alt text" title="Confusion matrix fluo weighted">
 
+## AUC
 
+<img src="Imges/Metrics_rename/Fluo decoupled(1).png" alt="Alt text" title="AUC fluo weighted">
 
 ## WSI + Fluo
 

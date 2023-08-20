@@ -32,8 +32,10 @@ The class responsible for loading images in the `big_nephro_dataset` file is:
 * `YAML10YBiosDataset`: Used in the training.
 * `YAML10YBiosDataset` or `YAML10YBiosDatasetAllPpb`: Used in testing, depending on the type of experiment (`YAML10YBiosDatasetAllPpb` for "all_patches").
 
+<div>
 <img src="Imges/Metrics_rename/WSI standard.png" alt="Alt text" title="Confusion matrix standard WSI">
 <img src="Imges/Metrics_rename/WSI standard(1).png" alt="Alt text" title="AUC">
+</div>
 
 ## Immunofluorescence images
 

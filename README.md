@@ -33,6 +33,7 @@ The class responsible for loading images in the `big_nephro_dataset` file is:
 * `YAML10YBiosDataset` or `YAML10YBiosDatasetAllPpb`: Used in testing, depending on the type of experiment (`YAML10YBiosDatasetAllPpb` for "all_patches").
 
 <img src="Imges/Metrics_rename/WSI standard.png" alt="Alt text" title="Confusion matrix standard WSI">
+<img src="Imges/Metrics_rename/WSI standard(1).png" alt="Alt text" title="AUC">
 
 ## Immunofluorescence images
 
@@ -54,6 +55,7 @@ Subsequently, the weights are loaded and used for evaluation on the intersection
 The preloaded weights of the two networks are in the "weights" folder.
 
 <img src="Imges/combined out.png" alt="Alt text" title="Combined output">
+
 
 ## Results
 Acc: 0.825 | AUC: 0.877 | F1 Score: 0.533 | Precision: 0.800 | Recall: 0.400 | Specificity: 0.967 | Trues: 5 | Correct Trues: 4 | Ground Truth Trues: 10

@@ -44,6 +44,10 @@ The class responsible for loading images in the `big_nephro_dataset` file is:
 
 <img src="Imges/Metrics_rename/All patches.png" alt="Alt text" title="Confusion matrix all patches">
 
+### ResNet-34
+
+<img src="Imges/Metrics_rename/All patches ResNet-34.png" alt="Alt text" title="Confusion matrix all patches ResNet-34">
+
 ## AUC
 <img src="Imges/Metrics_rename/WSI ALL PPB.png" alt="Alt text" title="Confusion matrix all patches">
 

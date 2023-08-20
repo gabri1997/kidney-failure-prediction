@@ -66,6 +66,12 @@ The class responsible for loading images in the `big_nephro_dataset` file is:
 
 <img src="Imges/Metrics_rename/Fluo no weights(1).png" alt="Alt text" title="AUC fluo unweighted">
 
+## Fluo weighted and decoupled
+
+<img src="Imges/Metrics_rename/Fluo decoupled.png" alt="Alt text" title="Confusion matrix fluo weighted">
+
+
+
 ## WSI + Fluo
 
 The `eval_fluo_wsi.py` file allows for evaluation using both types of images.

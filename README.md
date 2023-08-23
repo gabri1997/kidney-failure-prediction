@@ -138,5 +138,5 @@ The dataset used is in the folder Datasets:  `big_nephro_5Y_bios_dataset_split.y
 
 ### WSI Split comparison
 
-<img src="Imges/comparisons.png" alt="Alt text" title="Comparison">
+<img src="Imges/Splits.png" alt="Alt text" title="Comparison">
 

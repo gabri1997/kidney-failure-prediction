@@ -136,6 +136,7 @@ that is a class provided by the PyTorch library, specifically in the `torch.util
 
 The dataset used is in the folder Datasets:  `big_nephro_5Y_bios_dataset_split.yml`.
 
+### Comparison 
 
-
+<img src="Imges/comparison.png" alt="Alt text" title="Comparison">
 

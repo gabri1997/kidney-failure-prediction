@@ -129,7 +129,7 @@ The approach involved conducting multiple runs, each involving the selection of 
 Five complete runs were performed, each involving the selection of a distinct bag chosen at random. 
 The objective is to compare the outcomes and evaluate the extent to which they are impacted by the specific training and test instances encountered by the model.
 
-These experiments were conducted for both Whole Slide Images and Immunofluorescence images.
+These experiments were conducted for Whole Slide Images.
 
 Specifically, the main change that has been done consists in the use of the `SubsetRandomSampler`
 that is a class provided by the PyTorch library, specifically in the `torch.utils.data module`.

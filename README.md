@@ -118,6 +118,8 @@ The classifier is trained using features extracted from both WSI and Fluo images
 
 Once trained, an evaluation is performed using the features present in the file `features_test.py`.
 
+<img src="Imges/linear.png" alt="Alt text" title="Linear output">
+
 ## Evaluation across various dataset partitions.
 
 One of the experiments conducted in this study involves comparing results across multiple instances of the dataset, referred to as 'bags', that correspond to smaller subset of the dataset itself.

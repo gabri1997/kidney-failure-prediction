@@ -101,10 +101,8 @@ The preloaded weights of the two networks are in the "weights" folder.
 
 ## Results
 
-This is conf_matrix:
-[[29  1]
- [ 6  4]]
- 
+<img src="Imges/wsi+fluo.png" alt="Alt text" title="WSI + Fluo">
+
 Acc: 0.825 | AUC: 0.877 | F1 Score: 0.533 | Precision: 0.800 | Recall: 0.400 | Specificity: 0.967 | Trues: 5 | Correct Trues: 4 | Ground Truth Trues: 10
 
 ## Feature extraction

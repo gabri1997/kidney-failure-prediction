@@ -2,7 +2,6 @@ import sklearn
 import torch
 from argparse import ArgumentParser
 import os
-import torchvision
 os.environ["OMP_NUM_THREADS"] = "1"
 from torchvision import models
 from torch import nn
@@ -11,16 +10,13 @@ import numpy as np
 from torchvision import transforms
 from torch.utils.data import DataLoader
 from sklearn.metrics import confusion_matrix
-import seaborn as sn
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 import tensorflow as tf
 import cv2
 from torchvision.utils import save_image
 import matplotlib.pyplot as plt
 from big_nephro_dataset import YAML10YBiosDataset
-from big_nephro_dataset import YAML10YBiosDatasetFluo
 from big_nephro_dataset import YAML10YBiosDatasetAllPpb
 from sklearn import metrics
 import torch
@@ -173,7 +169,7 @@ class MyDensenet(nn.Module):
 
 
 class NefroNet():
-    def __init__(self, years, net, input_patches, preprocess_type, num_classes, num_epochs, l_r, batch_size, n_workers, job_id, weights, images_type, type_of_experiment):
+    def __init__(self, years, net, input_patches, preprocess_type, num_classes, num_epochs, l_r, batch_size, n_workers, job_id, weights, type_of_experiment):
         # Hyper-parameters
         self.years = years
         self.net = net
@@ -192,7 +188,6 @@ class NefroNet():
         self.best_acc = 0.0
         #self.nname = self.net + f'_{self.years}Y_' + str(job_id)
         self.nname = self.net + '_5Y_' + str(job_id)
-        self.images_type=images_type
         self.type_of_experiment = type_of_experiment
 
         #dname = f'/nas/softechict-nas-2/fpollastri/data/big_nephro/big_nephro_{self.years}Y_bios_dataset.yml'
@@ -226,8 +221,8 @@ class NefroNet():
             raise ValueError("unknown preprocessing technique")
   
    
-        if self.images_type == "wsi":
-            custom_training_transforms = transforms.Compose([
+   
+        custom_training_transforms = transforms.Compose([
               
                 transforms.RandomApply(nn.ModuleList([transforms.RandomRotation(180, fill=255)]), p=.25),
                 preprocess_fn,
@@ -236,22 +231,22 @@ class NefroNet():
                 transforms.ColorJitter(contrast=(0.5, 1.7)),
                 transforms.ToTensor(),
                 transforms.Normalize(dataset_mean, dataset_std),
-            ])
-            inference_transforms = transforms.Compose([
+        ])
+        inference_transforms = transforms.Compose([
                
                 #preprocess_fn,
                 transforms.Resize(size=(256, 512)),
              
                 transforms.ToTensor(),
                 transforms.Normalize(dataset_mean, dataset_std),
-            ])
+        ])
 
-            dataset = YAML10YBiosDataset(dataset=dname, crop_type=dataset_type, patches_per_bio=self.input_patches, transforms=custom_training_transforms, split=['training'])
+        dataset = YAML10YBiosDataset(dataset=dname, crop_type=dataset_type, patches_per_bio=self.input_patches, transforms=custom_training_transforms, split=['training'])
             
-            #WSI CON LO STESSO NUMERO DI PATCHES PER BIO
-            if self.type_of_experiment == 'all_patches':
+        #WSI CON LO STESSO NUMERO DI PATCHES PER BIO
+        if self.type_of_experiment == 'all_patches':
                 test_dataset = YAML10YBiosDatasetAllPpb(dataset=dname, crop_type=dataset_type, patches_per_bio=None, transforms=inference_transforms, split=['test'])
-            else:
+        else:
                 test_dataset = YAML10YBiosDataset(dataset=dname, crop_type=dataset_type, patches_per_bio=max(16, self.input_patches * 2), transforms=inference_transforms, split=['test'])
 
         if self.net == 'densenet': 
@@ -267,8 +262,8 @@ class NefroNet():
         
         # Loss and optimizer
         if self.num_classes == 1:
-                #t=torch.tensor([330/33]).to('cuda')
-                self.criterion = nn.BCEWithLogitsLoss()
+                t=torch.tensor([330/33]).to('cuda')
+                self.criterion = nn.BCEWithLogitsLoss(pos_weight=t)
             
         else:
             c1_w = get_probabilities(self.data_loader)
@@ -619,26 +614,26 @@ if __name__ == '__main__':
     parser = ArgumentParser()
 
     parser.add_argument('--network', default='resnet18')
-    parser.add_argument('--patches_per_bio', type=int, default=4, help='number of epochs to train')
+    parser.add_argument('--patches_per_bio', type=int, default=8, help='number of epochs to train')
     parser.add_argument('--preprocess', default='random', choices=['random', 'crop', 'whole_patch', 'big_whole_patch', 'glomeruli', 'big_glomeruli'])
     parser.add_argument('--classes', type=int, default=1, help='number of classes in the task')
     parser.add_argument('--load_epoch', type=int, default=0, help='load pretrained models')
     parser.add_argument('--workers', type=int, default=4, help='number of data loading workers')
     parser.add_argument('--batch_size', type=int, default=8, help='batch size during the training')
     parser.add_argument('--learning_rate', type=float, default=0.01, help='learning rate')
-    parser.add_argument('--epochs', type=int, default=100, help='number of epochs to train')
+    parser.add_argument('--epochs', type=int, default=120, help='number of epochs to train')
     parser.add_argument('--SRV', action='store_true', help='is training on remote server')
     parser.add_argument('--weighted', action='store_true', help='add class weights')
     parser.add_argument('--job_id', type=str, default='', help='slurm job ID')
     #parser.add_argument('--images_type', type=str, default='wsi', help='')
     #standard or all_patches
-    parser.add_argument('--type_of_experiment', type=str, default="all_patches",help='')
+    parser.add_argument('--type_of_experiment', type=str, default="standard",help='')
 
     opt = parser.parse_args()
     print(opt)
 
     n = NefroNet(years=5, net=opt.network, input_patches = opt.patches_per_bio, preprocess_type=opt.preprocess, num_classes=opt.classes, num_epochs=opt.epochs, batch_size=opt.batch_size,
-                 l_r=opt.learning_rate, n_workers=opt.workers, job_id=opt.job_id, weights=opt.weighted, images_type=opt.images_type)
+                 l_r=opt.learning_rate, n_workers=opt.workers, job_id=opt.job_id, weights=opt.weighted, type_of_experiment=opt.type_of_experiment)
     
     if opt.epochs > 0:  
                         

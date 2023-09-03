@@ -107,11 +107,16 @@ Acc: 0.825 | AUC: 0.877 | F1 Score: 0.533 | Precision: 0.800 | Recall: 0.400 | S
 
 ## Feature extraction
 
-The `union_feature_extraction.py` file allows extracting features from both WSI patches and immunofluorescence images.
-
+The `union_feature_extraction.py` file allows extracting features from both WSI patches and immunofluorescence images (intersection of the datasets).
 The features are then saved into:
-* `features_train.pt`
-* `features_test.pt`
+    * `features_train.pt`
+    * `features_test.pt`
+  
+The `wsi_feature_extraction.py` file allows extracting features from the patches of the WSI.
+The features are then saved into:
+    * `features_train_wsi.pt`
+    * `features_test_wsi.pt`
+
 
 ## Linear classifier
 

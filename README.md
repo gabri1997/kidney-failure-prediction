@@ -122,9 +122,19 @@ The features are then saved into:
 
 The `linear_classifier.py` file allows retraining a linear classifier using the previously extracted features.
 
+### Wsi + Fluo
+
 The classifier is trained using features extracted from both WSI and Fluo images belonging to the same biopsy (`fetaures_train.py`).
 
 Once trained, an evaluation is performed using the features present in the file `features_test.py`.
+
+### Only WSI test
+
+The classifier is trained using features extracted from the all the patches of all the WSI (`features_train_wsi.pt`)
+
+Once trained, an evaluation is performed using the features present in the file `features_test_wsi.py`.
+
+The unique parameter is the type of the experiment (--type), that could be "fused" or "WSI". 
 
 <img src="Imges/linear.png" alt="Alt text" title="Linear output">
 

@@ -614,7 +614,7 @@ if __name__ == '__main__':
     parser = ArgumentParser()
 
     parser.add_argument('--network', default='resnet18')
-    parser.add_argument('--patches_per_bio', type=int, default=8, help='number of epochs to train')
+    parser.add_argument('--patches_per_bio', type=int, default=6, help='number of epochs to train')
     parser.add_argument('--preprocess', default='random', choices=['random', 'crop', 'whole_patch', 'big_whole_patch', 'glomeruli', 'big_glomeruli'])
     parser.add_argument('--classes', type=int, default=1, help='number of classes in the task')
     parser.add_argument('--load_epoch', type=int, default=0, help='load pretrained models')
@@ -627,13 +627,13 @@ if __name__ == '__main__':
     parser.add_argument('--job_id', type=str, default='', help='slurm job ID')
     #parser.add_argument('--images_type', type=str, default='wsi', help='')
     #standard or all_patches
-    parser.add_argument('--type_of_experiment', type=str, default="standard",help='')
+    parser.add_argument('--type', type=str, default="standard",help='')
 
     opt = parser.parse_args()
     print(opt)
 
     n = NefroNet(years=5, net=opt.network, input_patches = opt.patches_per_bio, preprocess_type=opt.preprocess, num_classes=opt.classes, num_epochs=opt.epochs, batch_size=opt.batch_size,
-                 l_r=opt.learning_rate, n_workers=opt.workers, job_id=opt.job_id, weights=opt.weighted, type_of_experiment=opt.type_of_experiment)
+                 l_r=opt.learning_rate, n_workers=opt.workers, job_id=opt.job_id, weights=opt.weighted, type_of_experiment=opt.type)
     
     if opt.epochs > 0:  
                         

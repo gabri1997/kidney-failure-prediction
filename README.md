@@ -117,6 +117,10 @@ The features are then saved into:
     * `features_train_wsi.pt`
     * `features_test_wsi.pt`
 
+The weights that can be used for the WSi feature extraction are:
+
+`experiment_resnet18_5Y_WSIALL_NO_SPLIT`    or
+`resnet18_5Y_Z2_TEST_WSI_AllPPB_8BATCH_4PPBTRAIN_Random_net.pth`   
 
 ## Linear classifier
 
@@ -135,6 +139,12 @@ The classifier is trained using features extracted from the all the patches of a
 Once trained, an evaluation is performed using the features present in the file `features_test_wsi.py`.
 
 The unique parameter is the type of the experiment (--type), that could be "fused" or "WSI". 
+
+### Fused reuslts
+
+<img src="Imges/linear.png" alt="Alt text" title="Linear output">
+
+### Only WSI results
 
 <img src="Imges/linear.png" alt="Alt text" title="Linear output">
 

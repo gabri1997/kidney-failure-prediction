@@ -1,4 +1,4 @@
-# Prediction of kidney failure using Neural Networks
+# Prediction of kidney failure using Deep Neural Networks
 
 The purpose of this study is to investigate and enhance the prognostic score of the learning algorithm (DLPS). By combining the results obtained using whole slide images of renal biopsies (WSI) with their counterpart in immunofluorescence, it becomes possible to predict whether patients will experience renal failure within the next 5 years.
 
